@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme {
+  /* Custom Colors (CSS variables) */
+  --color-light-hover: #fcf4ff;
+  --color-dark-hover: #2a004a;
+  --color-dark-theme: #11001f;
+
+  /* Custom Fonts */
+  --font-Outfit: "Outfit", sans-serif;
+  --font-Ovo: "Ovo", serif;
+
+  /* Custom Shadows */
+  --shadow-black: 4px 4px 0 #000;
+  --shadow-white: 4px 4px 0 #fff;
+}
+
+/* Apply Outfit as default font */
+body {
+  font-family: var(--font-Outfit);
+}
