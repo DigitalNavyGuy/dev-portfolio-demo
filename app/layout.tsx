@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Outfit as OutfitFont, Ovo as OvoFont } from "next/font/google";
+import { ThemeProvider } from "@/app/providers";
 import "./globals.css";
 
 const Outfit = OutfitFont({
@@ -23,11 +24,18 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="scroll-smooth">
+    <html lang="en" className="scroll-smooth" suppressHydrationWarning>
       <body
         className={`${Ovo.className} ${Outfit.className} antialiased leading-8 overflow-x-hidden`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

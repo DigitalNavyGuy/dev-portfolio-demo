@@ -1,45 +1,64 @@
 import Image from "next/image";
 import { assets } from "@/assets/assets";
 import { useEffect, useRef, useState } from "react";
+import ThemeSwitch from "./ThemeSwitch";
+import { useTheme } from "next-themes";
 
 const Navbar = () => {
   const [isScroll, setIsScroll] = useState(false);
   const sideMenuToggle = useRef();
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
 
   const openMenu = () => {
     sideMenuToggle.current.style.transform = "translateX(-16rem)";
   };
+
   const closeMenu = () => {
     sideMenuToggle.current.style.transform = "translateX(16rem)";
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", () => {
-      if (scrollY > 50) {
-        setIsScroll(true);
-      } else {
-        setIsScroll(false);
-      }
-    });
+    setMounted(true);
+    const handleScroll = () => {
+      setIsScroll(window.scrollY > 50);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
+
+  if (!mounted) {
+    return (
+      <nav className="w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50">
+        {/* Placeholder for SSR */}
+        <div className="w-28 h-10 bg-gray-200 dark:bg-gray-700 mr-14"></div>
+      </nav>
+    );
+  }
 
   return (
     <>
-      <div className="fixed top-0 right-0 w-11/12 -z-10 translate-y-[-80%]">
-        <Image
-          src={assets.header_bg_color}
-          className="w-full"
-          alt="Header Background"
-        />
-      </div>
+      {resolvedTheme === "light" && (
+        <div className="fixed top-0 right-0 w-11/12 -z-10 translate-y-[-80%]">
+          <Image
+            src={assets.header_bg_color}
+            className="w-full"
+            alt="Header Background"
+            priority
+          />
+        </div>
+      )}
+
       <nav
         className={`w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50 ${
-          isScroll ? "bg-white/50 backdrop-blur-lg shadow-sm" : ""
+          isScroll
+            ? "bg-white backdrop-blur-lg shadow-sm dark:bg-dark-theme/0 dark:shadow-white/20"
+            : "dark:bg-transparent"
         }`}
       >
         <a href="#top">
           <Image
-            src={assets.logo}
+            src={resolvedTheme === "dark" ? assets.logo_dark : assets.logo}
             className="w-28 cursor-pointer mr-14"
             alt="Logo"
           />
@@ -78,9 +97,7 @@ const Navbar = () => {
         </ul>
 
         <div className="flex items-center gap-4">
-          <button>
-            <Image src={assets.moon_icon} className="w-6" alt="Moon Icon" />
-          </button>
+          <ThemeSwitch />
 
           <a
             href="#contact"
