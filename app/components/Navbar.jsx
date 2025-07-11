@@ -66,7 +66,7 @@ const Navbar = () => {
 
         <ul
           className={`hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-12 py-3 ${
-            isScroll ? "" : "bg-white/50 shadow-sm"
+            isScroll ? "" : "bg-transparent shadow-sm"
           } `}
         >
           <li>
@@ -107,7 +107,13 @@ const Navbar = () => {
           </a>
 
           <button className="block md:hidden ml-3" onClick={openMenu}>
-            <Image src={assets.menu_black} className="w-6" alt="Menu Icon" />
+            <Image
+              src={
+                resolvedTheme === "dark" ? assets.menu_white : assets.menu_black
+              }
+              className="w-6"
+              alt="Menu Icon"
+            />
           </button>
         </div>
 
@@ -115,12 +121,18 @@ const Navbar = () => {
 
         <ul
           ref={sideMenuToggle}
-          className="flex md:hidden flex-col g4 py-20 px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen bg-rose-50 transform duration-500"
+          className={`flex md:hidden flex-col gap-4 py-20 px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen transform duration-500 ${
+            mounted && resolvedTheme === "dark" ? "bg-dark-theme" : "bg-rose-50"
+          }`}
         >
           <div className="absolute top-6 right-6" onClick={closeMenu}>
             <Image
-              src={assets.close_black}
-              className="w-5 cursor-pointer"
+              src={
+                resolvedTheme === "dark"
+                  ? assets.close_white
+                  : assets.close_black
+              }
+              className="w-5 cursor-pointer "
               alt=""
             />
           </div>
