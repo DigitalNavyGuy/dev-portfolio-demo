@@ -66,7 +66,9 @@ const Navbar = () => {
 
         <ul
           className={`hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-12 py-3 ${
-            isScroll ? "" : "bg-transparent shadow-sm"
+            isScroll
+              ? ""
+              : "bg-transparent shadow-sm bg-opacity-50 dark: border dark:border-white/50 dark:bg-transparent"
           } `}
         >
           <li>
@@ -101,9 +103,18 @@ const Navbar = () => {
 
           <a
             href="#contact"
-            className="font-Ovo hidden lg:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4"
+            className="font-Ovo hidden lg:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 dark:border-white/50"
           >
-            Contact <Image src={assets.arrow_icon} className="w-3" alt="" />
+            Contact{" "}
+            <Image
+              src={
+                resolvedTheme === "dark"
+                  ? assets.arrow_icon_dark
+                  : assets.arrow_icon
+              }
+              className="w-3"
+              alt=""
+            />
           </a>
 
           <button className="block md:hidden ml-3" onClick={openMenu}>
@@ -122,7 +133,7 @@ const Navbar = () => {
         <ul
           ref={sideMenuToggle}
           className={`flex md:hidden flex-col gap-4 py-20 px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen transform duration-500 ${
-            mounted && resolvedTheme === "dark" ? "bg-dark-theme" : "bg-rose-50"
+            mounted && resolvedTheme === "dark" ? "bg-dark-hover" : "bg-rose-50"
           }`}
         >
           <div className="absolute top-6 right-6" onClick={closeMenu}>
