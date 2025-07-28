@@ -46,6 +46,15 @@ const Navbar = () => {
   const mobileMenuBg =
     resolvedTheme === "dark" ? "bg-dark-hover" : "bg-rose-50";
 
+  // Navigation items with consistent IDs
+  const navItems = [
+    { name: "Home", id: "home" },
+    { name: "About me", id: "about" },
+    { name: "Services", id: "services" },
+    { name: "My Work", id: "work" },
+    { name: "Contact me", id: "contact" },
+  ];
+
   return (
     <>
       {resolvedTheme === "light" && (
@@ -66,7 +75,7 @@ const Navbar = () => {
             : "dark:bg-transparent"
         }`}
       >
-        <a href="#top">
+        <a href="/">
           <Image
             src={logo}
             className="w-60 cursor-pointer mr-14"
@@ -75,25 +84,24 @@ const Navbar = () => {
           />
         </a>
 
+        {/* Desktop Menu */}
         <ul
-          className={`hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-12 py-3 ${
+          className={`hidden lg:flex items-center gap-6 xl:gap-8 rounded-full px-8 xl:px-12 py-3 ${
             isScroll
               ? ""
               : "bg-transparent shadow-sm bg-opacity-50 dark:border dark:border-white/50 dark:bg-transparent"
           }`}
         >
-          {["Home", "About me", "Services", "My Work", "Contact me"].map(
-            (item, index) => (
-              <li key={item}>
-                <a
-                  className="font-Ovo"
-                  href={`#${item.toLowerCase().replace(" ", "-")}`}
-                >
-                  {item}
-                </a>
-              </li>
-            )
-          )}
+          {navItems.map((item) => (
+            <li key={item.id}>
+              <a
+                className="font-Ovo hover:text-primary transition-colors"
+                href={`#${item.id}`}
+              >
+                {item.name}
+              </a>
+            </li>
+          ))}
         </ul>
 
         <div className="flex items-center gap-4">
@@ -101,13 +109,14 @@ const Navbar = () => {
 
           <a
             href="#contact"
-            className="font-Ovo hidden lg:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 dark:border-white/50"
+            className="font-Ovo hidden lg:flex items-center gap-3 px-8 xl:px-10 py-2.5 border border-gray-500 rounded-full ml-4 dark:border-white/50 hover:bg-light-hover dark:hover:bg-dark-hover/50 transition-colors"
           >
             Contact
             <Image src={arrowIcon} className="w-3" alt="" />
           </a>
 
-          <button className="block md:hidden ml-3" onClick={openMenu}>
+          {/* Mobile menu button */}
+          <button className="block lg:hidden ml-3" onClick={openMenu}>
             <Image src={menuIcon} className="w-6" alt="Menu Icon" />
           </button>
         </div>
@@ -115,25 +124,23 @@ const Navbar = () => {
         {/* Mobile Menu */}
         <ul
           ref={sideMenuToggle}
-          className={`flex md:hidden flex-col gap-4 py-20 px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen transform duration-500 ${mobileMenuBg}`}
+          className={`flex lg:hidden flex-col gap-6 py-20 px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen transform duration-500 ${mobileMenuBg}`}
         >
           <div className="absolute top-6 right-6" onClick={closeMenu}>
             <Image src={closeIcon} className="w-5 cursor-pointer" alt="Close" />
           </div>
 
-          {["Home", "About me", "Services", "My Work", "Contact me"].map(
-            (item) => (
-              <li key={item}>
-                <a
-                  className="font-Ovo"
-                  href={`#${item.toLowerCase().replace(" ", "-")}`}
-                  onClick={closeMenu}
-                >
-                  {item}
-                </a>
-              </li>
-            )
-          )}
+          {navItems.map((item) => (
+            <li key={item.id}>
+              <a
+                className="font-Ovo text-lg hover:text-primary transition-colors"
+                href={`#${item.id}`}
+                onClick={closeMenu}
+              >
+                {item.name}
+              </a>
+            </li>
+          ))}
         </ul>
       </nav>
     </>

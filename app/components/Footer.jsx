@@ -42,14 +42,16 @@ const Footer = () => {
   return (
     <footer className={`mt-20 ${textColor}`}>
       <div className="text-center">
-        <Image
-          src={logo}
-          alt="DigitalNavyGuy Logo"
-          className="w-48 mx-auto mb-2"
-          width={144}
-          height={40}
-          priority
-        />
+        <a href="/">
+          <Image
+            src={logo}
+            alt="DigitalNavyGuy Logo"
+            className="w-48 mx-auto mb-2"
+            width={144}
+            height={40}
+            priority
+          />
+        </a>
 
         <div className={`w-max flex items-center gap-2 mx-auto ${textColor}`}>
           <Image
@@ -92,6 +94,17 @@ const Footer = () => {
             </li>
           ))}
         </ul>
+      </div>
+
+      <div className="flex justify-center pb-8">
+        <a
+          href="https://nextjs.org"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex items-center gap-2 text-sm text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-300 transition-colors"
+        >
+          Built with Next.js and Tailwind CSS
+        </a>
       </div>
     </footer>
   );
