@@ -2,37 +2,43 @@ import { assets } from "@/assets/assets";
 import Image from "next/image";
 import { useState } from "react";
 import { motion } from "motion/react";
+import { useTheme } from "next-themes";
+import { useEffect } from "react";
 
 const Contact = () => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
   const [result, setResult] = useState("");
 
-  const onSubmit = async (event) => {
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div id="about" className="w-full px-[12%] py-10 scroll-mt-20">
+        {/* Placeholder for SSR */}
+        <div className="h-screen bg-gray-200 dark:bg-gray-800"></div>
+      </div>
+    );
+  }
+
+  const handleDemoSubmit = (event) => {
     event.preventDefault();
-    setResult("Sending....");
-    const formData = new FormData(event.target);
-
-    formData.append("access_key", process.env.NEXT_PUBLIC_ACCESS_KEY);
-
-    const response = await fetch("https://api.web3forms.com/submit", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await response.json();
-
-    if (data.success) {
-      setResult("Form Submitted Successfully");
-      event.target.reset();
-    } else {
-      console.log("Error", data);
-      setResult(data.message);
-    }
+    setResult("This is a demo - form submission is disabled");
+    // Clear the message after 3 seconds
+    setTimeout(() => setResult(""), 3000);
+    event.target.reset();
   };
 
   return (
     <motion.div
       id="contact"
-      className="w-full px-[12%] py-10 scroll-mt-20 bg-[url('/footer-bg-color.png')] bg-no-repeat bg-center bg-[length:90%_auto]"
+      className={`w-full px-[12%] py-10 scroll-mt-20 ${
+        resolvedTheme === "dark"
+          ? "bg-none"
+          : "bg-[url('/footer-bg-color.png')]"
+      }  bg-no-repeat bg-center bg-[length:90%_auto]`}
       initial={{ opacity: 0 }}
       whileInView={{ opacity: 1 }}
       transition={{ duration: 1 }}
@@ -68,7 +74,7 @@ const Contact = () => {
       </motion.p>
 
       <motion.form
-        onSubmit={onSubmit}
+        onSubmit={handleDemoSubmit}
         className="max-w-2xl mx-auto"
         initial={{ opacity: 0 }}
         whileInView={{ opacity: 1 }}
@@ -79,7 +85,11 @@ const Contact = () => {
             type="text"
             placeholder="Enter your name"
             required
-            className="flex-1 p-3 outline-none border-[0.5px] border-gray-400 rounded-md bg-white"
+            className={`flex-1 p-3 outline-none border-[0.5px]  rounded-md  ${
+              resolvedTheme === "dark" ? "bg-dark-hover/30" : "bg-white"
+            } ${
+              resolvedTheme === "dark" ? "border-white/90" : "border-gray-400"
+            }`}
             name="name"
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -89,7 +99,11 @@ const Contact = () => {
             type="email"
             placeholder="Enter your email"
             required
-            className="flex-1 p-3 outline-none border-[0.5px] border-gray-400 rounded-md bg-white"
+            className={`flex-1 p-3 outline-none border-[0.5px]  rounded-md  ${
+              resolvedTheme === "dark" ? "bg-dark-hover/30" : "bg-white"
+            } ${
+              resolvedTheme === "dark" ? "border-white/90" : "border-gray-400"
+            }`}
             name="email"
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
@@ -100,7 +114,11 @@ const Contact = () => {
           rows="6"
           placeholder="Enter your message"
           required
-          className="w-full p-4 outline-none border-[0.5px] border-gray-400 rounded-md bg-white mb-6"
+          className={`w-full p-4 outline-none border-[0.5px] border-gray-400 rounded-md mb-6 ${
+            resolvedTheme === "dark" ? "bg-dark-hover/30" : "bg-white"
+          } ${
+            resolvedTheme === "dark" ? "border-white/90" : "border-gray-400"
+          }`}
           name="message"
           initial={{ opacity: 0, y: 100 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -109,9 +127,13 @@ const Contact = () => {
 
         <motion.button
           type="submit"
-          className="py-3 px-8 w-max flex items-center justify-between gap-2 bg-black/80 text-white rounded-full mx-auto hover:bg-black duration-500 cursor-pointer"
+          className={`py-3 px-8 w-max flex items-center justify-between gap-2  text-white rounded-full mx-auto  duration-500 ${
+            resolvedTheme === "dark"
+              ? "bg-transparent border-[0.5px] hover:bg-dark-hover"
+              : "bg-black/80 hover:bg-black"
+          } cursor-pointer`}
           whileHover={{ scale: 1.05 }}
-          duration={{ duration: 0.3 }}
+          transition={{ duration: 0.3 }}
         >
           Submit Now
           <Image

@@ -19,3 +19,8 @@
 body {
   font-family: var(--font-Outfit);
 }
+
+.dark {
+  /* Dark theme styles */
+  background-color: var(--color-dark-theme);
+}

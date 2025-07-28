@@ -30,11 +30,21 @@ const Navbar = () => {
   if (!mounted) {
     return (
       <nav className="w-full fixed px-5 lg:px-8 xl:px-[8%] py-4 flex items-center justify-between z-50">
-        {/* Placeholder for SSR */}
         <div className="w-28 h-10 bg-gray-200 dark:bg-gray-700 mr-14"></div>
       </nav>
     );
   }
+
+  // Theme-dependent assets
+  const logo = resolvedTheme === "dark" ? assets.logo_dark : assets.logo;
+  const arrowIcon =
+    resolvedTheme === "dark" ? assets.arrow_icon_dark : assets.arrow_icon;
+  const menuIcon =
+    resolvedTheme === "dark" ? assets.menu_white : assets.menu_black;
+  const closeIcon =
+    resolvedTheme === "dark" ? assets.close_white : assets.close_black;
+  const mobileMenuBg =
+    resolvedTheme === "dark" ? "bg-dark-hover" : "bg-rose-50";
 
   return (
     <>
@@ -58,9 +68,10 @@ const Navbar = () => {
       >
         <a href="#top">
           <Image
-            src={resolvedTheme === "dark" ? assets.logo_dark : assets.logo}
-            className="w-28 cursor-pointer mr-14"
+            src={logo}
+            className="w-60 cursor-pointer mr-14"
             alt="Logo"
+            priority
           />
         </a>
 
@@ -68,34 +79,21 @@ const Navbar = () => {
           className={`hidden md:flex items-center gap-6 lg:gap-8 rounded-full px-12 py-3 ${
             isScroll
               ? ""
-              : "bg-transparent shadow-sm bg-opacity-50 dark: border dark:border-white/50 dark:bg-transparent"
-          } `}
+              : "bg-transparent shadow-sm bg-opacity-50 dark:border dark:border-white/50 dark:bg-transparent"
+          }`}
         >
-          <li>
-            <a className="font-Ovo" href="#top">
-              Home
-            </a>
-          </li>
-          <li>
-            <a className="font-Ovo" href="#about">
-              About me
-            </a>
-          </li>
-          <li>
-            <a className="font-Ovo" href="#services">
-              Services
-            </a>
-          </li>
-          <li>
-            <a className="font-Ovo" href="#work">
-              My Work
-            </a>
-          </li>
-          <li>
-            <a className="font-Ovo" href="#contact">
-              Contact me
-            </a>
-          </li>
+          {["Home", "About me", "Services", "My Work", "Contact me"].map(
+            (item, index) => (
+              <li key={item}>
+                <a
+                  className="font-Ovo"
+                  href={`#${item.toLowerCase().replace(" ", "-")}`}
+                >
+                  {item}
+                </a>
+              </li>
+            )
+          )}
         </ul>
 
         <div className="flex items-center gap-4">
@@ -105,74 +103,37 @@ const Navbar = () => {
             href="#contact"
             className="font-Ovo hidden lg:flex items-center gap-3 px-10 py-2.5 border border-gray-500 rounded-full ml-4 dark:border-white/50"
           >
-            Contact{" "}
-            <Image
-              src={
-                resolvedTheme === "dark"
-                  ? assets.arrow_icon_dark
-                  : assets.arrow_icon
-              }
-              className="w-3"
-              alt=""
-            />
+            Contact
+            <Image src={arrowIcon} className="w-3" alt="" />
           </a>
 
           <button className="block md:hidden ml-3" onClick={openMenu}>
-            <Image
-              src={
-                resolvedTheme === "dark" ? assets.menu_white : assets.menu_black
-              }
-              className="w-6"
-              alt="Menu Icon"
-            />
+            <Image src={menuIcon} className="w-6" alt="Menu Icon" />
           </button>
         </div>
 
-        {/* -------- Mobile Menu ------------ */}
-
+        {/* Mobile Menu */}
         <ul
           ref={sideMenuToggle}
-          className={`flex md:hidden flex-col gap-4 py-20 px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen transform duration-500 ${
-            mounted && resolvedTheme === "dark" ? "bg-dark-hover" : "bg-rose-50"
-          }`}
+          className={`flex md:hidden flex-col gap-4 py-20 px-10 fixed -right-64 top-0 bottom-0 w-64 z-50 h-screen transform duration-500 ${mobileMenuBg}`}
         >
           <div className="absolute top-6 right-6" onClick={closeMenu}>
-            <Image
-              src={
-                resolvedTheme === "dark"
-                  ? assets.close_white
-                  : assets.close_black
-              }
-              className="w-5 cursor-pointer "
-              alt=""
-            />
+            <Image src={closeIcon} className="w-5 cursor-pointer" alt="Close" />
           </div>
 
-          <li>
-            <a className="font-Ovo" href="#top" onClick={closeMenu}>
-              Home
-            </a>
-          </li>
-          <li>
-            <a className="font-Ovo" href="#about" onClick={closeMenu}>
-              About me
-            </a>
-          </li>
-          <li>
-            <a className="font-Ovo" href="#services" onClick={closeMenu}>
-              Services
-            </a>
-          </li>
-          <li>
-            <a className="font-Ovo" href="#work" onClick={closeMenu}>
-              My Work
-            </a>
-          </li>
-          <li>
-            <a className="font-Ovo" href="#contact" onClick={closeMenu}>
-              Contact me
-            </a>
-          </li>
+          {["Home", "About me", "Services", "My Work", "Contact me"].map(
+            (item) => (
+              <li key={item}>
+                <a
+                  className="font-Ovo"
+                  href={`#${item.toLowerCase().replace(" ", "-")}`}
+                  onClick={closeMenu}
+                >
+                  {item}
+                </a>
+              </li>
+            )
+          )}
         </ul>
       </nav>
     </>

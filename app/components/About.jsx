@@ -1,8 +1,26 @@
 import { assets, infoList, toolsData } from "@/assets/assets";
 import Image from "next/image";
-import { motion } from "motion/react";
+import { motion } from "framer-motion";
+import { useTheme } from "next-themes";
+import { useEffect, useState } from "react";
 
 const About = () => {
+  const { resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <div id="about" className="w-full px-[12%] py-10 scroll-mt-20">
+        {/* Placeholder for SSR */}
+        <div className="h-screen bg-gray-200 dark:bg-gray-800"></div>
+      </div>
+    );
+  }
+
   return (
     <motion.div
       id="about"
@@ -43,6 +61,9 @@ const About = () => {
             src={assets.user_image}
             alt="user"
             className="w-full rounded-3xl"
+            width={320}
+            height={320}
+            priority
           />
         </motion.div>
         <motion.div
@@ -67,19 +88,47 @@ const About = () => {
           >
             {infoList.map(({ icon, iconDark, title, description }, index) => (
               <motion.li
-                className="border-[0.5px] border-gray-400 rounded-xl p-6 cursor-pointer hover:bg-light-hover hover:-translate-y-1 duration-500 hover:shadow-black"
+                className={`border ${
+                  resolvedTheme === "light" ? "border-gray-400" : "border-white"
+                } rounded-xl p-6 cursor-pointer hover:-translate-y-1 duration-500 ${
+                  resolvedTheme === "light"
+                    ? "hover:shadow-black hover:bg-light-hover"
+                    : "hover:shadow-white dark:hover:bg-dark-hover/50"
+                }`}
                 key={index}
                 whileHover={{ scale: 1.05 }}
               >
-                <Image className="w-7 mt-3" src={icon} alt={title} />
-                <h3 className="my-4 font-semibold text-gray-700">{title}</h3>
-                <p className="text-gray-600 text-sm">{description}</p>
+                <Image
+                  className="w-7 mt-3"
+                  src={resolvedTheme === "dark" && iconDark ? iconDark : icon}
+                  alt={title}
+                  width={28}
+                  height={28}
+                />
+                <h3
+                  className={`my-4 font-semibold ${
+                    resolvedTheme === "light" ? "text-gray-700" : "text-white"
+                  }`}
+                >
+                  {title}
+                </h3>
+                <p
+                  className={`text-sm ${
+                    resolvedTheme === "light"
+                      ? "text-gray-600"
+                      : "text-white/80"
+                  }`}
+                >
+                  {description}
+                </p>
               </motion.li>
             ))}
           </motion.ul>
 
           <motion.h4
-            className="my-6 text-gray-700 font-Ovo"
+            className={`my-6 font-Ovo ${
+              resolvedTheme === "light" ? "text-gray-700" : "text-white/80"
+            }`}
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5, delay: 1.3 }}
@@ -95,11 +144,21 @@ const About = () => {
           >
             {toolsData.map((tool, index) => (
               <motion.li
-                className="flex items-center justify-center w-12 sm:w-14 aspect-square border border-gray-400 rounded-lg cursor-pointer hover:-translate-y-1 duration-500"
+                className={`flex items-center justify-center w-12 sm:w-14 aspect-square border ${
+                  resolvedTheme === "light"
+                    ? "border-gray-400"
+                    : "border-white/50"
+                } rounded-lg cursor-pointer hover:-translate-y-1 duration-500`}
                 key={index}
                 whileHover={{ scale: 1.1 }}
               >
-                <Image src={tool} alt="Tool" className="w-5 sm:w-7" />
+                <Image
+                  src={tool}
+                  alt="Tool"
+                  className="w-5 sm:w-7"
+                  width={28}
+                  height={28}
+                />
               </motion.li>
             ))}
           </motion.ul>
