@@ -69,7 +69,7 @@ const Footer = () => {
         className={`text-center sm:flex items-center justify-between border-t ${borderColor} mx-[10%] mt-12 py-6`}
       >
         <p className={textColor}>
-          &copy; 2025 DigitalNavyGuy. All rights reserved.
+          &copy; {new Date().getFullYear()} DigitalNavyGuy. All rights reserved.
         </p>
         <ul className="flex items-center gap-10 justify-center mt-4 sm:mt-0">
           {socialLinks.map((social) => (
